@@ -1,0 +1,67 @@
+Lock:
+
+Abstraction:
+
+Before mentioning anything about abstraction, we can take three different users here 
+(I am calling them as entity)
+
+1) You 2) Lock Repair Man 3) Expert
+
+You Entity: Since you know only to change direction(in case of mechanical locks) or 
+enter password(in case of digital locks) and lock and how to unlock all other operations behind the 
+scene are abstracted from you.
+
+Lock Repair Man Entity: Our local mechanic knows some of the implementation of locking the lock and 
+unlocking, i.e. he can open lock's body and check the internal parts. 
+So in short Lock Repair Man knows some of the implementations of the lock.
+
+Expert Entity: Since our expert (Designer of the lock) mechanic knows all the operations of our lock, 
+he can repair it very quickly. So in short Expert Entity knows all the implementations of the lock.
+
+The lock's operation is completely abstracted from you and it is partially implemented to 
+Lock Repair Man and fully implemented to Expert Entity. 
+
+
+
+Encapsulation:
+
+External Aspect:
+You unlock the lock either using a key by moving it in appropriate direction(clockwise or counterclockwise)
+or by typing password amd other mechanisms as per the lock type.
+
+Internal Aspect:
+Working of internal parts of the lock to either lock or unlock
+
+
+
+Inheritance:
+
+
+
+class Lock
+{
+    int width;
+    int height;
+    abstract void lock();
+    abstract void unlock();
+}
+class key
+{
+    
+}
+class Padlocks implements Lock
+{
+
+}
+class DigitalLocks implements Lock
+{
+
+}
+class KnobLocks implements Lock
+{
+
+}
+class FurnitureLocks implements Lock
+{
+
+}
