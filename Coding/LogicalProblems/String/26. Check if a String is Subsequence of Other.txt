@@ -1,0 +1,19 @@
+
+class Solution
+{
+    //Function to check if a string is subsequence of other string.
+    public static boolean isSubSequence(String A, String B)
+    {
+        int n=A.length();
+        int m=B.length();
+        if(m<n)
+            return false;
+        int i=0,j=0;
+        for(i=0;i<m&&j<n;i++)
+        {
+            if(A.charAt(j)==B.charAt(i))
+            j++;
+        }
+        return(j==n);
+    }
+};
