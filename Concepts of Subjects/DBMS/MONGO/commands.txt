@@ -1,0 +1,317 @@
+assign
+
+create a new database vitasunday
+
+employee
+====> employee_name, emp_id,age,salary,
+manager_name
+
+======>
+
+
+$eq
+
+use vitasunday
+
+db.createCollection("employee")
+
+db.employee.insertMany([
+		{"employee_name":"rishabh","emp_id":1,"salary":30000,"manager_name":"satyam"},
+		{"employee_name":"sanyog","emp_id":2,"salary":70000,"manager_name":"rishika"},
+		{"employee_name":"prasad","emp_id":3,"salary":40000,"manager_name":"shubham"}
+])
+
+
+db.employee.find({"salary":{$gte:35000}})
+
+db.employee.find({"salary":{$eq:35000}})
+
+db.employee.find({"salary":{$ne:35000}})
+
+db.employee.find({"emp_id":3},{"emp_id":1,"_id":0})
+
+db.employee.find({"emp_id":3},{"manager_name":1,"_id":0})
+
+db.employee.find({"emp_id":3},{"manager_name":1,"_id":0})
+
+db.employee.update({"emp_id":3},{$set:{"manager_id":9}})---adding new field in already exisitng record
+
+
+-----------------------------------------------------------------------------------------------------
+
+db.sample.insertMany([
+{
+ "name":"abc",
+ "age":20
+},
+{
+"name":"azc",
+ "age":20
+},
+{
+"name":"rem",
+ "age":20
+}])
+
+
+db.sample.find({"name":/a/})---anywhere between
+
+db.sample.find({"name":/^a/})---starts with a
+
+db.sample.find({"name":/c$/})---end with c
+
+select * from table where name like %a%; /a/
+
+select * from table where name like 'r%';
+db.sample.find({"name":/^r/})
+
+select * from table where name like '%c';
+db.sample.find({"name":/c$/})
+
+db.student.find({},{"name":1,_id:0}).limit(2)
+
+db.examsresults.find().skip(2)
+
+db.examsresults.find().skip(db.examsresults.count()/2).limit(1)
+
+db.examsresults.find().limit(2)
+
+db.examsresults.find().skip(2)
+
+db.student.createIndex({"name":1})
+
+
+mongoimport -d vita -c website --file website.json
+
+
+db.website.find()
+
+db.website.aggregate(
+    { 
+	$group : {_id : "$hosting", total : { $sum : 1 }}
+    }
+  );
+
+sorting in descending order
+db.website.aggregate(
+     { 
+	$group : {_id : "$hosting", total : { $sum : 1 }}
+     },
+     {
+	$sort : {total : -1}
+     }
+  );
+
+sorting in ascending order
+db.website.aggregate(
+     { 
+	$group : {_id : "$hosting", total : { $sum : 1 }}
+     },
+     {
+	$sort : {total : 1}
+     }
+  );
+
+db.website.aggregate(
+    { 
+	$match : {hosting : "aws.amazon.com"}
+    },
+    { 
+	$group : { _id : "$hosting", total : { $sum : 1 } }
+    }
+  );
+
+variable groupdata
+
+var groupdata = db.website.aggregate(     {  $group : {_id : "$hosting", total : { $sum : 1 }}     },     { $sort : {total : -1}     }   );
+
+using variable groupdata to make a new collection websitegroup
+db.websitegroup.insertMany(groupdata.toArray());
+
+
+db.website.aggregate(
+[
+	{$group : {_id : "$hosting", total : { $sum : 1 }}},
+	{$sort : {total : -1}}
+]),
+	{allowDiskUse: false}
+);
+
+db.website.find().skip(db.website.count()-2)
+
+
+db.website.aggregate( [ {$group : {_id : {"hosting":"$hosting","domainName":"$domainName"}, total : { $sum : 1 }}}, {$sort : {total : -1}} ], {allowDiskUse: true} );
+
+
+mongoexport -d vita -c websitegroup -f _id,total -o group.csv --csv
+
+mongoexport -d vita -c websitegroup -f _id,total -o group.csv --csv
+
+mongoexport -d vita -c websitegroup -f _id,total -o group.json
+
+mongoexport -d vita -c websitegroup -f _id,total -o C://data//group.json
+
+mongoexport -d vita -c website -f _id,total -o C://dat//group.json
+
+mongodump -d vita -o C://data
+
+one to one
+db.artists.insert(
+    {
+        _id : 2,
+        artistname : "Prince",
+        address :   {
+                        street : "Audubon Road",
+                        city : "Chanhassen",
+                        state : "Minnesota",
+                        country : "United States"
+                    }
+    }
+)
+
+one to many
+db.artists.insert(
+    {
+        _id : 3,
+        artistname : "Moby",
+        albums : [
+                    {
+                        album : "Play",
+                        year : 1999,
+                        genre : "Electronica"
+                    }, 
+                    {
+                        album : "Long Ambients 1: Calm. Sleep.",
+                        year : 2016,
+                        genre : "Ambient"
+                    }
+                ]
+    }
+)
+
+
+db.artists.update({'artistname':'Moby'},{$push: { albums: {album : "Long Ambients 2: Calm. Sleep.", year : 2019,genre : "Ambient"}}})  
+  
+
+
+db.artists.update(
+ {"albums.year":2019},{"$set":{"albums.$.genre":"horror"}}
+
+)
+
+db.artists.update({"artistname":"abc"},{"$set":{"artistname":"abc"}},{"upsert":true})
+
+
+db.musicians.insert(
+    {
+        _id : 10,
+        name : "Alex Lifeson",
+        instrument : [ "Guitar", "Backing Vocals" ],
+        artist_id : 4
+    }
+)
+
+db.musicians.insert(
+    {
+        _id : 11,
+        name : "Neil Peart",
+        instrument : "Drums",
+        artist_id : 4
+    }
+)
+
+
+db.artists.insert(
+    {
+        _id : 4,
+        artistname : "Rush"
+    }
+)
+
+db.musicians.insert(
+    {
+        _id : 9,
+        name : "Geddy Lee",
+        instrument : [ "Bass", "Vocals", "Keyboards" ],
+        artist_id : 4
+    }
+)
+
+db.musicians.insert(
+    {
+        _id : 10,
+        name : "Alex Lifeson",
+        instrument : [ "Guitar", "Backing Vocals" ],
+        artist_id : 4
+    }
+)
+
+db.musicians.insert(
+    {
+        _id : 11,
+        name : "Neil Peart",
+        instrument : "Drums",
+        artist_id : 4
+    }
+)
+
+
+just like join
+db.artists.aggregate([
+    {
+      $lookup:
+        {
+          from: "musicians",
+          localField: "_id",
+          foreignField: "artist_id",
+          as: "band_members"
+        }
+   },
+   { $match : { artistname : "Rush" } }
+]).pretty()
+
+
+redis-cli
+
+set us united_states
+
+get us
+
+getrange us 1 3
+
+getset us united_states+of_america
+
+get us
+
+HMSET countryhash us "united states" uk "united kingdom"
+
+hmget countryhash us
+
+hmget countryhash field
+
+lpush countries india
+
+lpush countries usa
+
+llen countries
+
+lpop countries
+
+rpop countries
+
+lpush countries india
+
+lrange countries 0 2
+
+sadd country usa
+
+sadd country usa
+
+scard country
+
+zadd t 1 hello
+
+zadd t 2 fello
+
+zrange t 0 10 withscores
+

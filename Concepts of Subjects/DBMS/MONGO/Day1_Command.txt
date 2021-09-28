@@ -1,0 +1,152 @@
+1. mongod.exe --port 27017 --dbpath C:\mongodb\data --journal
+
+2. show dbs
+
+3. use vita
+
+4. db.student.insert({ name : "Sachin" })
+
+5. db.createCollection('dept')
+
+6. show Collections
+
+7. db.student.find()
+
+8. db.student.insert({
+	regNo: "3014",
+	name: "Test Student",
+	course: {
+		courseName: "MCA",
+		duration: "3 Years"
+	},
+	address: {
+		city: "Bangalore",
+		state: "KA",
+		country: "India"
+	}
+})
+
+9. db.project.insert({proid:145,proname:"edac"})
+
+10. db.student.find({"regNo":"3014"})
+
+11. db.student.find({"name":"Test Student"})
+
+12. db.student.find({"address.city":"Bangalore"})
+
+13. db.examsresults.insertmany({
+	  "name":"xyz",
+	   "subjects":{
+		"subjectname":"english",
+		 "mark":70
+		},
+{
+	  "name":"pqr",
+	   "subjects":{
+		"subjectname":"english",
+		 "mark":60
+		},
+{
+	  "name":"mno",
+	   "subjects":{
+		"subjectname":"english",
+		 "mark":44
+		}
+
+	})
+
+13. db.examsresults.find({"subjects.mark":{$gt:60}})
+14. db.examsresults.find({"subjects.mark":{$gt:e60}})
+15. db.examsresults.find({"subjects.mark":{$eq:60}})
+db.examsresults.find({"subjects.mark":60})
+
+16. db.examsresults.find({"subjects.mark":{$ne:60}})
+17. db.examsresults.find({"subjects.mark":{$in:[60,50]}})
+
+18. db.examsresults.find({"subjects.mark":{$nin:[60,50]}})
+
+19. db.examsresults.find({$and:[{"name":"abc"},{"subjects.mark":{$eq:80}}]})
+
+20. db.student.find({"regNo":{$exists:true}
+21. db.student.find({"regNo":{$exists:false}
+
+22. db.examsresults.find({"subjects.mark":{$not:{$gt:60}}})
+
+23. db.student.update({'regNo':'3014'},{$set:{'name':'Virat'}})
+
+24. db.student.update({'regNo':'3014'},{$set:{'name':'Virat'}})
+
+25. db.student.updateMany({'regNo':'3014'},{$set:{'name':'Virat'}})
+26. db.student.find({"regNo":"3014"},{"course":1,_id:0})
+27. db.student.find({"regNo":"3014"},{"course.courseName":1,_id:0})
+28. db.student.find({"regNo":"3014"},{"name":1,"course":1,_id:0})
+
+29. db.student.remove({"regNo":"3014"})
+
+30. db.results.insertMany([{
+	  "name":"xyz",
+	   "subjects":[{
+				  "subjectname":"english",
+				  "mark":70
+			     },
+				 {
+				  "subjectname":"hindi",
+				  "mark":80
+			     }]
+	},
+	{
+	  "name":"bcr",
+	   "subjects":[{
+				  "subjectname":"english",
+				  "mark":60
+			     },
+				 {
+				  "subjectname":"hindi",
+				  "mark":70
+			     }]
+	},
+	{
+	  "name":"ncr",
+	   "subjects":[{
+				  "subjectname":"english",
+				  "mark":50
+			     },
+				 {
+				  "subjectname":"hindi",
+				  "mark":60
+			     }]
+	}])
+31. db.results.find({"subjects":{$elemMatch:{"subjectname":"hindi","mark":80}}})
+32. db.results.find({"subjects":{$elemMatch:{"subjectname":"hindi","mark":80}}},{"name":1})
+33. db.results.find({"subjects":{$elemMatch:{"subjectname":"hindi","mark":80}}},{"name":1,"_id":0})
+
+34. db.teacher.insertMany([
+ { "name":"abc",
+    "subjects":
+		[
+		  {
+		   "subjectname":"eng",
+		   "location":[{"name":"ttt"},{"name":"yyy"}]
+		  }
+		]
+ 
+
+},
+{ "name":"xyz",
+    "subjects":
+		[
+		  {
+		   "subjectname":"hindi",
+		   "location":[{"name":"uuu"},{"name":"vvv"}]
+		  }
+		]
+}
+
+])
+
+35. db.teacher.find({"subjects.location":{$elemMatch:{"name":"ttt"}}})
+
+36. 
+
+
+
