@@ -1,0 +1,206 @@
+Round
+
+select round(10.36789,2);
+select round(10.36789);
+select round(10.96789);
+Floor- Highest integer value lower than or equal to the given number
+
+select floor(10.4);
+select floor(-10.4);
+Ceiling-Lowest integer value greater than or equal to the given number
+
+
+select Ceiling(10.4);
+select Ceiling(-10.4);
+
+Power
+select power(10,2);
+SQRT
+
+select sqrt(100);
++,-,/,*
+Mod
+
+select mod(10,3);
+abs
+select abs(-2000);
+
+
+to get closest multiple of 5
+
+e.g if pass the value value as 22 I should get 20 but if i pass the value as 23 i should get 25
+
+
+-- string functions
+
+Substring
+select substring('abcdef',2,3);
+
+select substring('abcdef',3,2);
+select substring('abcdef',-3,2);
+
+
+
+Instr
+select instr('abcdef','cd');
+
+select instr('abcdefcdcdcdef','cd');
+
+select instr('abcdefcdcdcdef','cdz');
+
+Replace
+select replace('aaddadaerf','e','z');
+
+Left
+
+select left('abcef',2);
+Right
+select right('abcef',2);
+
+Ltrim
+select ltrim('    bceff   ');
+
+Rtrim
+select rtrim('    bceff   ');
+
+
+Trim
+select trim('    bceff   ');
+reverse
+select reverse('abcdef');
+
+
+
+
+Current_date(), curdate()- returns current date of the system
+select Current_date();
+select  curdate();
+Current_time(), curtime()- returns current time of the system
+select Current_time();
+select  curtime();
+
+Now()- returns current date time of the system
+select now();
+select Year(now());
+select Month(now());
+select Day(now());
+select Hour(now());
+select Minute(now());
+select second(now());
+
+
+
+Weekday(date)- Week day number of the week
+select weekday(now());
+
+Week(date)- week number of the year
+select week(now());
+
+
+
+Last_day
+select last_day(now());
+
+
+DateDiff
+
+select datediff('2021-05-21','2021-05-10');
+Date_add
+select date_add(now(),interval 10 day);
+select date_add(now(),interval 10 year);
+
+Date_format
+
+select date_format(now(),%d %m %y);
+
+
+delimiter $$
+create procedure sp_helloworld(name varchar(100))
+begin
+select concat('Hello ', name);
+end;
+$$
+
+delimiter ;
+
+call sp_helloworld('John');
+
+
+
+
+select routine_name from information_schema.routines where routine_schema='userdb1';
+
+
+
+delimiter $$
+create procedure sp_checkevenodd(num int)
+begin
+if mod(num,2)=0 then
+select concat(num,' is an even number');else
+select concat(num,' is an odd number');
+end if;
+end;
+$$
+
+
+delimiter ;
+
+drop procedure sp_checkevenodd;
+delimiter $$
+create procedure sp_checkevenodd(num int)
+begin
+if mod(num,2)=0 then
+select concat(num,' is an even number');
+else
+select concat(num,' is an odd number');
+end if;
+end;
+$$
+
+
+
+
+delimiter @@
+create procedure sp_num(num int)
+begin
+declare i int;
+set i=1;
+while(i<=num)
+do
+select i;
+set i=i+1;
+end while;
+end;
+@@
+
+delimiter ;
+call sp_num(10);
+
+
+delimiter !!
+create procedure sp_checkprime(num int)
+begin
+declare i int;
+declare flag int;
+set i=2;
+set flag=0;
+while(i<=num/2 and flag=0)
+do
+if mod(num,i)=0 then
+set flag=1;
+select concat(num,'  is a not prime number');
+end if;
+set i=i+1;
+end while;
+if flag=0 then
+select concat(num,'  is a prime number');
+end if;
+end;
+!!
+
+
+delimiter ;
+call sp_checkprime(1234673);
+
+
+

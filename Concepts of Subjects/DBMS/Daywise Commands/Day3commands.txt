@@ -1,0 +1,138 @@
+create table emp_rank
+(eid int, ename varchar(100), salary int,deptid int);
+
+
+
+insert into emp_rank values(1,'a',100,1);
+insert into emp_rank values(2,'b',200,2);
+insert into emp_rank values(3,'c',100,1);
+insert into emp_rank values(4,'d',200,2);
+insert into emp_rank values(5,'e',50,1);
+insert into emp_rank values(6,'f',60,2);
+insert into emp_rank values(7,'g',70,1);
+
+
+
+
+select 
+*,
+row_number() over(order by salary desc) rn,
+rank() over(order by salary desc) rnk,
+dense_rank() over(order by salary desc) drnk
+from emp_rank;
+
+
+
+select 
+*,
+row_number() over(partition by deptid order by salary desc) rn,
+rank() over(partition by deptid order by salary desc) rnk,
+dense_rank() over(partition by deptid order by salary desc) drnk
+from emp_rank;
+
+
+
+
+
+
+8. Display the deptname, name of top 5 earning employees from each dept.
+
+select * from (select deptname,ename,salary ,row_number() over(partition by deptname order by salary desc) rn from emp join dept
+on emp.deptid=dept.deptid) as t 
+where rn<=5;
+
+
+
+create table account (accountno int primary key auto_increment , accname varchar(100));
+
+
+insert into account(accname) values('a');
+insert into account(accname) values('b');
+insert into account(accname) values('c');
+
+
+delete from account;
+insert into account(accname) values('d');
+
+truncate table account;
+insert into account(accname) values('e');
+
+
+create view vw_emp_dept
+as
+select 
+deptname,eid,ename
+from emp join dept
+on emp.deptid=dept.deptid;
+
+select * from vw_emp_dept;
+
+
+
+select table_schema,table_name,table_type from
+information_schema.tables
+where table_schema='userdb1'
+and table_type='VIEW';
+
+
+create table test_vw 
+(eid int not null, ename varchar(100), salary int);
+
+
+
+create view vw_test_1
+as
+select eid,ename from test_vw;
+
+
+
+insert into vw_test_1 valueS(1,'a');
+update vw_test_1 set ename='b';
+
+
+
+
+create view vw_test_2
+as
+select ename,salary from test_vw;
+
+
+insert into vw_test_2 values('c',100);
+
+delete from vw_test_2;
+
+drop view vw_test_2;
+
+drop view vw_emp_dept;
+create view vw_emp_dept
+as
+select deptname,ename,salary
+from emp ,dept
+where emp.deptid=dept.deptid;
+
+
+
+-- DML on view cannot happen if it modifies more than 1 base table at the same time
+insert into vw_emp_dept(deptname,ename,salary) values('HR','ABC',100);-- fails
+
+insert into vw_emp_dept(ename,salary) values('ABC',100);-- works
+insert into vw_emp_dept(deptname) values('ABC');-- fails because deptid is primary key
+delete from vw_emp_dept;-- will fail
+
+
+
+
+
+
+create table
+test_com_pk
+(c1 int,
+c2 int,
+c3 varchar(100),
+primary key(c1,c2));
+
+
+
+
+
+

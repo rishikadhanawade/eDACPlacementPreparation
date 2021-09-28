@@ -1,0 +1,132 @@
+drop table tab_cnt;
+
+create temporary table tab_cnt(tab_name varchar(100), cnt int);
+drop PROCEDURE sp_tabcnt;
+
+delimiter $$
+
+CREATE  PROCEDURE sp_tabcnt(dbname varchar(100))
+begin
+declare flag int default 0;
+declare tname varchar(100);
+declare c1 cursor for
+select table_name from information_schema.tables where table_schema=dbname and table_type='BASE TABLE' ;
+declare continue handler for not found set flag=1;
+create temporary table tab_cnt(tab_name varchar(100), cnt int);
+open c1;
+myloop: loop
+fetch c1 into tname;
+if flag=1 then
+leave myloop;
+end if;
+set @sqlcmd=concat('insert into tab_cnt select ''', tname,''' table_name, count(*) from ' ,tname);
+prepare stmt from @sqlcmd;
+execute stmt;
+end loop;
+select * from tab_cnt;
+drop table tab_cnt;
+end;
+$$
+
+-- write a procedure that takes input a database name and a string
+procedure should search this string in the values of all the columns and all the tables of that database and return
+name of all the tables and columns that contains that string as part of the data in it 
+
+
+
+select table_name,column_name from information_schema.columns where table_schema='userdb1';
+
+
+
+
+select 'emp' table_name, count(*) from emp;
+
+
+create table emp_audit
+(upd_user varchar(100),
+upd_dt datetime,
+command varchar(100),
+old_eid int,
+new_eid int,
+old_ename varchar(100),
+new_ename varchar(100),
+old_salary int,
+new_salary int,
+old_deptid int,
+new_deptid int);
+
+
+
+
+
+delimiter $$
+
+create trigger trigg_upd_audit_emp
+after  update 
+on emp
+for each row
+begin
+insert into emp_audit 
+(upd_user,upd_dt,command,
+old_eid,new_eid,
+old_ename,new_ename,
+old_salary,new_salary,
+old_deptid,new_deptid)
+values(user(),now(),'UPDATE',old.eid,new.eid,
+old.ename,new.ename,
+old.salary,new.salary,
+old.deptid,new.deptid);
+end ;
+$$
+
+
+drop trigger trigg_upd_audit_emp$$
+
+
+create trigger trigg_ins_audit_emp
+after  insert 
+on emp
+for each row
+begin
+insert into emp_audit 
+(upd_user,upd_dt,command,
+old_eid,new_eid,
+old_ename,new_ename,
+old_salary,new_salary,
+old_deptid,new_deptid)
+values(user(),now(),'INSERT',null,new.eid,
+null,new.ename,
+null,new.salary,
+null,new.deptid);
+commit;
+end 
+$$
+
+
+show engine innodb status \G;
+
+
+Day 6
+
+Revise topics and command that we covered in the class . commands for today session attached.
+
+
+Assignment # 1 
+-- write a procedure that takes input a database name and a string
+procedure should search this string in the values of all the columns and all the tables of that database and return
+name of all the tables and columns that contains that string as part of the data in it 
+
+
+Assignment # 2 
+
+write a function that takes a number upto 8 digits as an input and returns the output in words form
+
+e.g 1234 output should be
+one thousane two hundred and thirty four
+e.g.2 3,45,67,899
+
+Three crores forty five lakhs sixty seven thousand eight hundred and ninty nine
+
+
+
+

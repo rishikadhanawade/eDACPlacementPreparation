@@ -1,0 +1,406 @@
+10/03/96->'1996-10-03'
+
+amt decimal(10,2)
+
+Tab1
+c1 primary key,c2,c3
+
+make c1 as unique instead of primary
+
+1. drop primary key
+alter table tab1 drop primary key;
+2. add unique on c1
+alter table tab1 add constraint tab1_c1_uk unique(c1);
+
+update is used to change the data in existing records
+
+
+Alter table
+	Add columns
+	Drop column
+	Change data type
+	Change null to not null or vice versa
+	Add default value
+	Rename Table 
+	Add or drop constraints
+
+
+Delete can have where clause and is used to delete records from the table
+
+Syntax--
+
+delete from table_name where condition;
+
+
+Truncate is also used to delete records from the table but it doesn't have a where clause which means truncate will always delete all the records of the table.
+Syntax-
+
+truncate table table_name
+
+delete can be rollback but truncate cannot be rollback
+
+
+drop table commands will remove the complete structure and data of the table
+
+-- delete 1 row base on some condition do like below
+delete from city where name='abc' limit 1;
+
+
+in Foreign key- two tables are involved
+1 table act as a parent table
+2nd table act as child table
+in the 2nd table you define the reference of the column with the column of the parent table
+
+
+
+create table parent(deptid int unique , deptname varchar(100));
+
+create table child(eid int, ename varchar(100), did int , foreign key fk1 (did) references parent(deptid));
+
+insert into child values(1,'a',1);-- will fail
+
+insert into child values(1,'a',null);-- will work
+
+insert into parent values(1,'a'); -- will work
+insert into child values(2,'b',1);-- will work
+
+
+delete from parent;-- will fail
+
+insert into child values(1,'a'); -- will fail
+
+insert into child(eid,ename) values(1,'a'); -- will work
+
+drop table child;
+create table child(eid int, ename varchar(100), did int );
+
+alter table child add foreign key fk1 (did) references parent(deptid);
+
+
+create user user123 identified by 'user123';
+
+grant select on city to user123;
+
+revoke select on city from user123;
+
+grant select,insert,update,delete on city to user123;
+
+
+select user from mysql.user;
+
+
+show grants for user123;
+
+drop user user123;
+
+
+
+create table t1(c1 int, c2 varchar(100));
+create table t2(c1 int, c3 varchar(100));
+
+insert into t1 values(1,'a'),(2,'b'),(3,'c');
+
+insert into t2 values(3,'x'),(4,'y'),(5,'z');
+
+
+--cross join
+
+select * from t1,t2;-- old syntax
+
+select * from t1 cross join t2;-- ansi syntax
+
+select t1.c1,c2,c3 from t1 cross join t2;-- ansi syntax
+
+
+
+--inner join
+
+select * from t1,t2
+where t1.c1=t2.c1;-- old syntax
+
+select * from t1 inner join t2
+on t1.c1=t2.c1;-- ansi syntax
+
+select * from t1 join t2
+on t1.c1=t2.c1;-- ansi syntax
+
+
+select t1.c1,c2,c3 from t1 join t2
+on t1.c1=t2.c1;-- ansi syntax
+
+
+
+--left join
+select * from t1 left join t2
+on t1.c1=t2.c1;-- ansi syntax
+
+
+--left join
+select t1.c1,c2,c3 from t1 left join t2
+on t1.c1=t2.c1;-- ansi syntax
+
+select t1.c1,c2,c3 from t1 left outer join t2
+on t1.c1=t2.c1;-- ansi syntax
+
+
+--right join
+select t1.c1,c2,c3 from t1 right outer join t2
+on t1.c1=t2.c1;-- ansi syntax
+
+select t1.c1,c2,c3 from t1 right join t2
+on t1.c1=t2.c1 ;-- ansi syntax
+
+
+--full join-- not supported in mysql
+
+
+select t1.c1,c2,c3 from t1 full outer join t2
+on t1.c1=t2.c1;-- ansi syntax
+
+select t1.c1,c2,c3 from t1 full join t2
+on t1.c1=t2.c1 ;-- ansi syntax
+
+
+
+select count(*) from t1;
+
+select count(*),count(id),count(salary) from t_cc;
+
+select sum(salary) from emp;
+
+select max(salary) from emp;
+select min(salary) from emp;
+select avg(salary) from emp;
+
+
+
+select deptid,sum(salary)
+from emp
+group by deptid ;
+
+
+select deptname,sum(salary) total_salary
+from
+emp join dept
+on
+emp.deptid=dept.deptid
+group by deptname;
+
+
+select deptname,sum(salary) total_salary
+from
+emp join dept
+on
+emp.deptid=dept.deptid
+group by deptname
+having sum(salary)>20000;
+
+
+select deptname,sum(salary) total_salary
+from
+emp join dept
+on
+emp.deptid=dept.deptid
+group by deptname
+having total_salary>20000;
+
+
+
+
+create table a (id int);
+create table b (id int);
+
+insert into a values(1),(2),(3);
+insert into b values(3),(4),(5);
+
+select * from a
+union
+select * from b;
+
+
+select * from b
+union
+select * from a;
+
+
+
+
+select * from a
+union all
+select * from b;
+
+
+select * from b
+union all
+select * from a;
+
+
+
+select * from a
+intersect
+select * from b;
+
+
+select * from b
+intersect
+select * from a;
+
+--workaroud in mysql
+select * from a where id in (select id from b);
+
+select * from b where id in (select id from a);
+
+
+select * from a
+minus
+select * from b;
+
+
+select * from b
+minus
+select * from a;
+
+
+--workaround in mysql
+
+select * from a where id not in (select id from b);
+
+select * from b where id not in (select id from a);
+
+
+
+
+
+
+
+-- full join workaround
+select * from t1 left join t2
+on t1.c1=t2.c1
+union
+select * from t1 right join t2
+on t1.c1=t2.c1
+
+
+Select deptname,ename,salary from emp join dept
+On emp.deptid=dept.deptid
+Order by salary desc;
+
+--highest earning employee
+
+
+Select deptname,ename,salary from emp join dept
+On emp.deptid=dept.deptid
+Order by salary desc limit 1;
+
+
+--lowest earning employee
+
+
+Select deptname,ename,salary from emp join dept
+On emp.deptid=dept.deptid
+Order by salary limit 1;
+
+
+--top 5 earning employees
+
+Select deptname,ename,salary from emp join dept
+On emp.deptid=dept.deptid
+Order by salary desc limit 5;
+
+-- second highest earning employee
+
+Select deptname,ename,salary from emp join dept
+On emp.deptid=dept.deptid
+Order by salary desc limit 1 offset 1;
+
+
+Select deptname,ename,salary from emp join dept
+On emp.deptid=dept.deptid
+Order by salary desc limit 1,1;
+
+
+ select * from (Select ename,salary from emp order by salary desc limit 5 ) as t order by salary;
+
+
+
+
+-- sum only top salaries
+
+ select sum(salary) from (Select ename,salary from emp order by salary desc limit 5 ) as t
+
+
+
+create table emp_mgr(eid int, ename varchar(100), mgr_id int);
+insert into emp_mgr values(1,'a',4);
+insert into emp_mgr values(2,'b',4);
+insert into emp_mgr values(3,'c',4);
+insert into emp_mgr values(4,'d',4);
+insert into emp_mgr values(5,'e',6);
+insert into emp_mgr values(6,'f',6);
+insert into emp_mgr values(7,'g',6);
+
+
+select e.mgr_id,m.ename mgr_name,e.eid,e.ename from emp_mgr e, emp_mgr m where 
+e.mgr_id=m.eid and
+e.mgr_id!=e.eid order by e.mgr_id;
+
+
+
+
+
+
+
+
+
+
+
+select ename,salary,
+case when salary >1000 then 'High'
+when salary>500 then 'Medium'
+else 'Low' end Salary_Band 
+from emp;
+
+
+
+
+
+
+
+
+
+
+
+select *,
+case when salary >1000 then 'High'
+when salary>500 then 'Medium'
+else 'Low' end Salary_Band 
+from emp;
+
+
+
+
+create table marks 
+(roll int, sub varchar(10),marks int);
+
+
+insert into marks values(1,'M',97);
+insert into marks values(1,'H',98);
+insert into marks values(1,'E',96);
+insert into marks values(2,'M',98);
+insert into marks values(2,'H',99);
+insert into marks values(2,'E',24);
+insert into marks values(3,'M',35);
+insert into marks values(3,'H',36);
+insert into marks values(3,'E',37);
+
+
+select roll,
+case when min(marks)>=35 and avg(marks)>=40 then 'Pass'
+else 'Fail' end  Result from marks
+group by roll;
+
+
+
+
+
+

@@ -1,0 +1,408 @@
+delimiter $$
+create procedure sp_loademp(rec int)
+begin
+declare i int;
+set i=1;
+truncate table emp;
+start transaction;
+while(i<=rec)
+do
+insert into emp(eid, ename,salary, deptid) 
+values(i,concat(convert(char(mod((i-1),26)+97),char(10)),i),
+rand()*100000,
+mod((i-1),3)+1);
+if mod(i,50000)=0 then
+commit;
+start transaction;
+end if;
+set i=i+1;
+end while;
+commit;
+end;
+$$
+
+
+
+--Q122.Does the total amount in orders by customer in Rome and London 
+exceed 
+the commission paid to salespersons in London and New York by more than 5 times?
+
+
+select sum(amt) total_amt
+ from orders o , customers c
+where o.cnum=c.cnum
+and city in ('Rome', 'London');
+
+
+
+select sum(amt) total_amt
+ from orders o join customers c
+on o.cnum=c.cnum
+where city in ('Rome', 'London');
+
+
+select sum(amt*comm) total_comm
+from
+orders o , salespeople s
+where o.snum=s.snum
+and city in ('London','New York');
+
+
+
+select total_amt,total_comm, total_comm*5 total_comm_5_times,
+case when total_amt>total_comm*5 then 'Yes' else 'No' end
+total_amt_exceeds_5_times_comm from (select sum(amt) total_amt
+ from orders o , customers c
+where o.cnum=c.cnum
+and city in ('Rome', 'London')) as c_amt,
+(select sum(amt*comm) total_comm
+from
+orders o , salespeople s
+where o.snum=s.snum
+and city in ('London','New York')) as s_comm;
+
+
+
+
+select   sum(case when c.city in ('Rome', 'London') then amt else 0 end) c_amt
+sum(case when s.city in ('London','New York') then amt*comm else 0 end)  s_comm
+from
+orders o , customers c, salespeople s
+where o.cnum=c.cnum
+and
+c.snum=s.snum
+and
+o.snum=s.snum;
+
+
+
+select case when  sum(case when c.city in ('Rome', 'London') then amt else 0 end) >
+sum(case when s.city in ('London','New York') then amt*comm else 0 end) * 5 then 'Yes' 
+else 'No' end total_amt_exceeds_5_times_comm 
+from
+orders o , customers c, salespeople s
+where o.cnum=c.cnum
+and
+c.snum=s.snum
+and
+o.snum=s.snum;
+
+
+
+
+
+
+
+select sum(case when deptname='HR' then salary else null end) HR,
+sum(case when deptname='IT' then salary else null end) IT,
+sum(case when deptname='Finance' then salary else null end) Finance
+ from 
+emp join dept
+on
+emp.deptid=dept.deptid;
+
+
+--Q125.What is the total income for the company?
+
+
+select sum(amt)-sum(amt*comm) total_income
+from orders o , salespeople s
+where o.snum=s.snum
+;
+
+
+
+
+
+
+
+
+
+
+
+delimiter !!
+create function sf_checkprime(num int)
+returns varchar(100)
+DETERMINISTIC
+begin
+declare i int;
+set i=2;
+while(i<=num/2 )
+do
+if mod(num,i)=0 then
+return(concat(num,'  is a not prime number'));
+end if;
+set i=i+1;
+end while;
+return (concat(num,'  is a prime number'));
+end;
+!!
+
+
+delimiter ;
+select sf_checkprime(13);
+
+
+
+-- write a function that takes input a number and returns the factorial of the number
+
+e.g. 5 - 5X4X3X2X1=120
+
+
+
+
+delimiter $$
+create function sf_fact(num int)
+returns bigint
+deterministic
+begin
+declare fact bigint;
+declare i int;
+set i=3;
+set fact=2;
+while(i<=num)
+do
+set fact=fact*i;
+set i=i+1;
+end while;
+return(fact);
+end;
+$$
+
+
+
+
+
+delimiter $$
+create function sf_fact2(num int)
+returns bigint
+deterministic
+begin
+declare fact bigint;
+declare i int;
+set i=3;
+set fact=2;
+myloop: loop
+if i>num then
+leave myloop;
+end if;
+set fact=fact*i;
+set i=i+1;
+end loop;
+return(fact);
+end;
+$$
+
+
+
+
+delimiter $$
+create function sf_getdeptame(v_eid int)
+returns varchar(100)
+READS SQL DATA
+begin
+declare v_dname varchar(100);
+select deptname into v_dname from emp join dept on emp.deptid=dept.deptid where eid=v_eid;
+return(v_dname);
+end;
+$$
+
+
+
+--write a function that takes input a sentence and a word and returns the count of occurnce of the word in the sentence
+
+
+'This is a test. Test was very tough but I managed to pass the test' , 'test'
+
+
+3
+
+delimiter $$
+create function sf_cnt_wordS(sent mediumtext, word varchar(100))
+returns int
+deterministic
+begin
+declare temp_sent mediumtext;
+declare word_cnt int;
+set word_cnt=0;
+set temp_sent=sent;
+while(length(temp_sent)>0 and instr(temp_sent,word)>0)
+do
+if instr(temp_sent,word)>0 then
+set word_cnt=word_cnt+1;
+set temp_sent =substring(temp_sent ,instr(temp_sent,word)+length(word));
+end if;
+end while;
+return(word_cnt);
+end;
+$$
+
+
+
+drop function sf_cnt_wordS;
+
+delimiter $$
+create function sf_cnt_wordS(sent mediumtext, word varchar(100))
+returns int
+deterministic
+begin
+declare temp_sent mediumtext;
+declare word_cnt int;
+set word_cnt=0;
+set temp_sent=sent;
+while( instr(temp_sent,word)>0)
+do
+set word_cnt=word_cnt+1;
+set temp_sent =substring(temp_sent ,instr(temp_sent,word)+length(word));
+end while;
+return(word_cnt);
+end;
+$$
+
+
+
+delimiter ;
+
+
+
+
+
+delimiter $$
+create procedure getallname()
+begin
+declare flag int default 0;
+declare name varchar(100);
+declare v_eid int;
+declare c1 cursor for
+select eid,ename from emp ;
+declare continue handler for not found set flag=1;
+open c1;
+myloop: loop
+fetch c1 into v_eid,name;
+if flag=1 then
+leave myloop;
+end if;
+select name;
+end loop myloop;
+close c1;
+end;
+$$
+
+
+
+write a function that takes input  a deptname and returns the name of all the empoyees
+in that dept as a comma separated list
+
+e.g if you pass HR then it should return
+
+a1,d4,g7...
+
+delimiter $$
+create function sf_getelist(v_deptname varchar(100))
+returns mediumtext
+reads sql data
+begin
+declare flag int default 0;
+declare elist mediumtext;
+declare name varchar(100);
+declare c1 cursor  for 
+select ename from emp join dept on emp.deptid=dept.deptid where deptname=v_deptname;
+declare continue handler for not found set flag=1;
+open c1;
+set elist='';
+myloop: loop
+fetch c1 into name;
+if flag=1 then
+leave myloop;
+end if;
+set elist=concat(elist,',',name);
+end loop;
+close c1;
+return(substring(elist,2));
+end;
+$$
+
+delimiter ;
+
+
+drop function sf_getelist;
+
+delimiter $$
+create function sf_getelist(v_deptname varchar(100))
+returns mediumtext
+reads sql data
+begin
+declare flag int default 0;
+declare elist mediumtext;
+declare name varchar(100);
+declare c1 cursor  for 
+select ename from emp join dept on emp.deptid=dept.deptid where deptname=v_deptname;
+declare continue handler for not found set flag=1;
+open c1;
+set elist='';
+fetch c1 into name;
+while(flag=0)
+do
+set elist=concat(elist,',',name);
+fetch c1 into name;
+end while;
+close c1;
+return(substring(elist,2));
+end;
+$$
+
+delimiter ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
