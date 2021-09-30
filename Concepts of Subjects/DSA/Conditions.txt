@@ -1,0 +1,24 @@
+Stack
+
+Empty: tos==-1
+Full:  tos==maxSize-1
+
+Queue
+
+Empty: front>rear
+Full:  rear==maxSize-1
+
+Circular Queue
+
+rear=(rear+1)%size;
+front=(front+1)%size;
+
+count==0 Empty
+count==size Full
+
+r.right==null and r.left==null -> leaf nodes
+
+Threaded Binary Tree does not use recursion.
+
+
+front=0

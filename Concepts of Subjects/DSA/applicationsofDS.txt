@@ -1,0 +1,88 @@
+Applications of Stack,Queue,Linked List
+
+Stack:
+
+1. Redo and Undo
+2. History in web browsing.
+3. Balancing Parenthesis
+4. Recursion
+5. Forward and backward in browsing.
+6. String Reversal
+7. Converting infix to postfix or prefix 
+8. Evaluation of a prefix or postfix expression.
+9. Scratch card’s earned after Google pay transaction
+10.Dec to Binary
+
+Queue:
+
+1. Scheduling
+2. Printer
+3. Youtube Buffering
+4. Messaging Queue
+5. Data Transfer and Data Packing
+6. Keyboard input
+
+Linked List:
+
+1. Snake Game,Road Rash
+2. Data Supply Chain
+3. Music Player
+4. HyperLink
+5. Data Storage and Access
+6. Polynomial Addition
+7. Image Viewer and Music Player 
+
+Circular Linked List
+
+1.Any node can be a starting point. We can traverse the whole list by starting from any point. We just need to stop when the first visited node is visited again.
+2.Useful for implementation of a queue. Unlike this implementation, we don’t need to maintain two pointers for front and rear if we use a circular linked list. 
+We can maintain a pointer to the last inserted node and the front can always be obtained as the next of last.
+3.Circular lists are useful in applications to repeatedly go around the list. For example, when multiple applications are running on a PC, it is common for the 
+operating system to put the running applications on a list and then to cycle through them, giving each of them a slice of time to execute, and then making them 
+wait while the CPU is given to another application. It is convenient for the operating system to use a circular list so that when it reaches the end of the list 
+it can cycle around to the front of the list.
+4.Circular Doubly Linked Lists are used for implementation of advanced data structures like Fibonacci Heap.
+
+Tree:
+
+1. AutoCorrection AutoCompletion
+3. Data Storage in Hierarchy
+4. State Space Tree
+5. Posting questions on websites like Quora, the comments are child of questions 
+6. Databases also uses tree data structures for indexing.
+7. Searching and Sorting
+
+Graph:
+
+1. Navigation
+2. Map
+3. Face Recognition
+4. Tagging
+5. Finger Print
+6. Minimum Spanning Tree
+7. Shortest Path Problem
+
+
+SPF Application is GPS and Network 
+
+Minimum Spanning Tree
+
+Applications of Graph:
+I/P: Graph and O/P: Tree
+
+Removes cycles and edges with higher cost keeps only minimum 
+costing edges
+
+Minimum connection cost
+-> pipes
+-> wiring
+-> road construction
+-> flooding or broadcasting
+-> flow based problems
+-> maximum connection at min cost
+
+->Prims
+->Kruskal
+
+In Kruskal intermediate solution can be disconnected and subgraph.
+In Prim intermediate solution can only be subgraph.
