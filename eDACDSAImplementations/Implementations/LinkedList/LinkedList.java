@@ -71,7 +71,7 @@ public class LinkedList {
 				t=t.next;
 			}
 			t2.next=null;
-			if(t==root)
+			if(t==root)      
 				root=null;
 			System.out.println("Deleted:"+t.data);
 		}
