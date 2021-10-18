@@ -1,4 +1,4 @@
-import java.util.Scanner;
+  3import java.util.Scanner;
 class Stack
 {
 	int s[],size,e,tos;

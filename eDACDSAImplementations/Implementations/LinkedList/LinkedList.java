@@ -77,10 +77,10 @@ public class LinkedList {
 		}
 	}
 	public void insertAtMid(int x)
-    {
+    	{
         if (root == null)
-            this.insertLeft(x);
-        else {
+            		this.insertLeft(x);
+       		else {
             Node newNode = new Node(x);
             Node ptr = root;
             int len = 0;

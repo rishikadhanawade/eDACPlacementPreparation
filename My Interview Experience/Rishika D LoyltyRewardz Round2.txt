@@ -1,0 +1,49 @@
+
+Tell about your project and your role in it?
+Flow of your project?
+What is object?
+What is class?
+What is inheritance?
+What is polymorphism?
+What is pass by value and pass by reference?
+
+
+string strMain = "My India is my country, Mumbai is my city";
+string strKeyword = "my c";
+
+
+Find:
+1. Total no of Occurences: ___
+2. Index of each ocurrence: ___
+
+
+Ans-> https://www.geeksforgeeks.org/frequency-substring-string/
+
+
+
+Write Program for factorial (Recursive & Iterative)
+
+
+//Iterative
+int n=5;
+int fact=1;
+
+for(int i=1;i<=n;i++)
+{
+	fact=fact*i;
+}
+
+
+//Recursive
+int fact(int num)
+{
+	if(num==1||num==0)
+		return 1;
+	else
+		return num*fact(num-1);
+}
+
+
+What is normalisation? and its types?
+What are indexes and types?
+What are SQL constraints?
