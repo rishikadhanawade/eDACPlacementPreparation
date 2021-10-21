@@ -1,0 +1,11 @@
+@Id: This annotation marks the field as the unique identifier of the ad (i.e., the primary key in the database).
+@GeneratedValue: This annotation tells JPA that the database will need to supply its value. In this case, the database will auto-generate (GenerationType.AUTO) this field, no matter how (the strategy to do so depends on what database you are using).
+@Entity – JPA annotation to make the object ready for storage in a JPA-based data store.
+@Table – Name of the table in data storage where this entity will be stored.
+@NotNull -  field (e.g. CharSequence, Collection, Map, or Array) constrained with @NotNull must be not null. An empty value, however, is perfectly legal
+@Column - to indicate specific characteristics of the physical database column. 
+@OneToMany - used for foreign key constraints
+@JoinColumn - used to make a column as foreign key
+@RestController - @RestController is a specialized version of the controller. It includes the @Controller and @ResponseBody annotations, and as a result, simplifies the controller implementation:
+The controller is annotated with the @RestController annotation; therefore, the @ResponseBody isn't required.
+@RequestMapping 

@@ -1,0 +1,47 @@
+1) Tell me something about yourself
+2) What was your project?
+3) What was your role in your project?
+4) How did you maintain cart in your project? [Project": eMART]
+5) What is encapsulation and how to achieve it?
+6) Two tables
+
+Subject table
+sid | sub_name | 
+1   | English  |
+2   | Maths    |
+
+student table
+stud_id | name  | sid |marks
+1       | A     | 1  | 20
+2       | B     | 1  | 40
+3       | C     | 2  | 30
+
+1) Display student name and their subject
+select name, sub_name from subject sub,student stud where sub.sid=stud.sid;
+
+(Same using Joins NewSyntax) 
+select name, sub_name from subject sub join student on sub.sid=stud.sid; 
+
+2) Highest Marks
+select name from student order by marks desc limit 1;
+
+
+int a=2;
+int b=3;
+
+
+//add a and b without using '+' operator
+
+
+int count=0;
+while(a>0)
+{
+	a--;
+	count++;
+}
+
+while(b>0)
+{	
+	b--;
+	count++;
+}

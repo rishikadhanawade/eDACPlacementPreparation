@@ -71,16 +71,16 @@ public class LinkedList {
 				t=t.next;
 			}
 			t2.next=null;
-			if(t==root)
+			if(t==root)      
 				root=null;
 			System.out.println("Deleted:"+t.data);
 		}
 	}
 	public void insertAtMid(int x)
-    {
+    	{
         if (root == null)
-            this.insertLeft(x);
-        else {
+            		this.insertLeft(x);
+       		else {
             Node newNode = new Node(x);
             Node ptr = root;
             int len = 0;

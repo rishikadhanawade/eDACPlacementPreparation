@@ -81,7 +81,7 @@ SELECT sname, CONCAT(floor(comm*100),' %') AS Commission from salespeople;
 select concat('Highest rating of ',city,' is ' , max(rating)) as  Ratings from customers group by city;
 select rating, cname, cnum from customers order by rating desc;
 select city, round(avg(comm),2) as Comm from salespeople where city='london';
-select * from orders where snum =(select snum from customers where cnum=2001);
+select * from orders where snum=(select snum from customers where cnum=2001);
 select * from salespeople where comm>=0.10 and comm<=0.12;
 select sname, city from salespeople where city='london' and comm>0.10;
 SELECT * FROM ORDERS where (amt < 1000 OR NOT (odate = 10/03/1996 AND cnum > 2003)); #gives whole order table
